@@ -1,8 +1,8 @@
-name: Aternos Auto Start
+name: Aternos Auto Controller
 on:
   schedule:
-    - cron: '*/30 * * * *' # Chạy mỗi 30 phút
-  workflow_dispatch:
+    - cron: '*/30 * * * *' # Chạy mỗi 30 phút để kiểm tra server
+  workflow_dispatch: # Cho phép nhấn nút chạy thủ công
 
 jobs:
   run-bot:
@@ -17,5 +17,8 @@ jobs:
         run: |
           pip install playwright requests
           playwright install chromium
-      - name: Run Script
+      - name: Run Bot with Secrets
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }} # Truyền secret vào biến môi trường
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: python aternos_manager.py
